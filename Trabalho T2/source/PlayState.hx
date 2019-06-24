@@ -19,6 +19,10 @@ class PlayState extends FlxState{
 	var _balas:FlxTypedGroup<Bullet>;
 	var _velocity:FlxVector = new FlxVector();
 
+	var _life:FlxTypedGroup<Life>;
+	var _municao:FlxTypedGroup<Ammunition>;
+
+
 	public var cont:Float = 2;
 	public var tiros:Int = 0;
 	public var municao:Int = 20;
@@ -38,6 +42,9 @@ class PlayState extends FlxState{
 		asteroides = new FlxTypedGroup<Asteroids>();
 		_balas = new FlxTypedGroup<Bullet>(20);
 
+		_life = new FlxTypedGroup<Life>();
+		_municao = new FlxTypedGroup<Ammunition>();
+
 
       	camTarget.setPosition(FlxG.width/2, FlxG.height/2);
       	FlxG.camera.target = camTarget;
@@ -51,6 +58,8 @@ class PlayState extends FlxState{
 		add(_hud);
 		add(asteroides);
 		add(_balas);
+		add(_life);
+		add(_municao);
 
 
 		for (i in 0...200) {          //gera asteroides
@@ -60,6 +69,13 @@ class PlayState extends FlxState{
 			//geraAsteroides();
 		}
 		spawnarAsteroides();
+
+		for (i in 0...10){
+			var n = new Life();
+			n .kill();
+			_life.add(n);
+		}
+		spawnarVidas();
 
 		for(i in 0...20){
             var s = new Bullet();
@@ -185,6 +201,13 @@ class PlayState extends FlxState{
 			var xRandom = random.int(0, FlxG.width - 64);
 			var asteroide = asteroides.getFirstAvailable();
 			asteroide.reset(xRandom, 0);
+		}, 0);
+	}
+	function spawnarVidas() {
+		new FlxTimer().start(10, function(Timer:FlxTimer) {
+			var xRandom = random.int(0, FlxG.width - 64);
+			var _life = _life.getFirstAvailable();
+			_life.reset(xRandom, 0);
 		}, 0);
 	}
 }
