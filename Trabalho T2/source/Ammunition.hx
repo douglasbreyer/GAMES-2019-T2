@@ -9,9 +9,9 @@ class Ammunition extends FlxSprite{
 		
 		super();
 
-		loadGraphic(AssetPaths.municao__png, true, 64, 64);
+		loadGraphic(AssetPaths.municao__png, true, 48, 48);
         //makeGraphic(50, 50, FlxColor.RED);
-		centerOffsets();
+		//centerOffsets();
 		
     }
 

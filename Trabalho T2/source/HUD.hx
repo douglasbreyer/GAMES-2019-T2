@@ -18,8 +18,8 @@ class HUD extends FlxGroup{
         _fundo = new FlxSprite();
         _fundo.makeGraphic(FlxG.width, 25, FlxColor.WHITE);
         _score = new FlxText(5, 1, 0, "Score: 000");
-        _municao = new FlxText(130, 1, 0, "Magazine: 000");
-        _vidas = new FlxText(280, 1, 0, "Life: 0");
+        _municao = new FlxText(150, 1, 0, "Magazine: 000");
+        _vidas = new FlxText(330, 1, 0, "Life: 0");
         _score.color = FlxColor.BLUE;
         _municao.color = FlxColor.BLUE;
         _vidas.color = FlxColor.BLUE;

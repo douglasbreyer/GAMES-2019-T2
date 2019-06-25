@@ -73,11 +73,18 @@ class PlayState extends FlxState{
 		spawnarAsteroides();
 
 		for (i in 0...10){
-			var n = new Life();  //gera vidas
+			var n = new Life();  //gera especial de vidas
 			n.kill();
 			life.add(n);
 		}
 		spawnarVidas();
+
+		for (i in 0...10){
+			var n = new Ammunition();  //gera especial de municao
+			n.kill();
+			especmunicao.add(n);
+		}
+		spawnarMunicao();
 		
 		
 		for(i in 0...20){
@@ -109,6 +116,23 @@ class PlayState extends FlxState{
 			geraVidas();
 		}
 	}
+
+	function criaMunicao():Void{
+		for (i in 0...5) {          //gera especial de municao
+			var n = new Ammunition();
+			n.kill();
+			especmunicao.add(n);
+			geraMunicao();
+		}
+	}
+
+	function onOverlapMunicao(a:FlxSprite, b:FlxSprite):Void{   //Colisao das municoes com o player
+		var colide = FlxCollision.pixelPerfectCheck(a, b);
+		if(colide){
+        	municao += 100;
+			a.kill();
+		}
+    }
 
 	function onOverlapVida(a:FlxSprite, b:FlxSprite):Void{   //Colisao dos coracoes com o player
 		var colide = FlxCollision.pixelPerfectCheck(a, b);
@@ -188,6 +212,7 @@ class PlayState extends FlxState{
 		FlxG.overlap(_player, asteroides, onOverlapPlayer);
 		FlxG.overlap(_balas, asteroides, onOverlapTiro);
 		FlxG.overlap(life, _player, onOverlapVida);
+		FlxG.overlap(especmunicao, _player, onOverlapMunicao);
        
 		if(vidas == 0){
 			goGameOver();
@@ -203,12 +228,6 @@ class PlayState extends FlxState{
 		asteroide.angularVelocity = 100;
 	}
 
-	// private function geraVidas():Void
-	// {
-	// 	var teste:Life = life.getFirstAvailable(Life);
-	// 	teste.reset(200, 100);
-	// 	teste.velocity.y = 10;
-	// }
 
 	private function geraBalas():Void
 	{
@@ -221,6 +240,12 @@ class PlayState extends FlxState{
 		life.angularVelocity = 100;
 	}
 
+	private function geraMunicao():Void
+	{
+		var especmunicao:Ammunition = especmunicao.recycle(Ammunition);
+		especmunicao.angularVelocity = 100;
+	}
+
 	function spawnarAsteroides() {
 		new FlxTimer().start(0.5, function(Timer:FlxTimer) {
 			var xRandom = random.int(0, FlxG.width - 64);
@@ -229,11 +254,19 @@ class PlayState extends FlxState{
 		}, 0);
 	}
 	function spawnarVidas() {
-		new FlxTimer().start(2, function(Timer:FlxTimer) {
+		new FlxTimer().start(10, function(Timer:FlxTimer) {
 			var xxRandom = ramdomLife.int(0, FlxG.width - 64);
 			var life = life.getFirstAvailable();
 			life.reset(xxRandom, 0);
 			life.velocity.y = 100;
+		}, 0);
+	}
+	function spawnarMunicao() {
+		new FlxTimer().start(20, function(Timer:FlxTimer) {
+			var xxxRandom = ramdomMunicao.int(0, FlxG.width - 64);
+			var especmunicao = especmunicao.getFirstAvailable();
+			especmunicao.reset(xxxRandom, 0);
+			especmunicao.velocity.y = 100;
 		}, 0);
 	}
 }
