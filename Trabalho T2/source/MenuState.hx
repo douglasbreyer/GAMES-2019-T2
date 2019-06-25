@@ -20,10 +20,18 @@ class MenuState extends FlxState{
         _btnCredito = new FlxButton(0, 0, "Credits", goCreditos);
         _btnCredito.x = (FlxG.width/2)-(_btnCredito.width / 2);
         _btnCredito.y = _btnPlay.y + _btnPlay.height + 5;
-        
+
+        // if (FlxG.sound.music == null){ // don't restart the music if it's already playing
+        //     FlxG.sound.playMusic(AssetPaths.dead__mp3, 1, true);
+        // }
+
+
         add(_title);
         add(_btnPlay);
         add(_btnCredito);
+
+
+
         super.create();
     }
 	override public function update(elapsed:Float):Void{

@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.util.FlxCollision;
 import flixel.util.FlxTimer;
 import flixel.FlxState;
@@ -23,6 +24,8 @@ class PlayState extends FlxState{
 	public static var life:FlxTypedGroup<Life>;
 	public static var especmunicao:FlxTypedGroup<Ammunition>;
 
+	var _somTiro:FlxSound;
+
 
 	public var cont:Float = 2;
 	public var tiros:Int = 0;
@@ -33,6 +36,8 @@ class PlayState extends FlxState{
 	var random:FlxRandom = new FlxRandom();
 	var ramdomLife:FlxRandom = new FlxRandom();
 	var ramdomMunicao:FlxRandom = new FlxRandom();
+
+////////////////////////////////////////////////////////////////////// CREATE ////////////////////////
 
 
 	override public function create():Void {
@@ -47,6 +52,8 @@ class PlayState extends FlxState{
 
 		life = new FlxTypedGroup<Life>();
 		especmunicao = new FlxTypedGroup<Ammunition>();
+
+		_somTiro = FlxG.sound.load(AssetPaths.laser__wav);
 
 
       	camTarget.setPosition(FlxG.width/2, FlxG.height/2);
@@ -99,6 +106,7 @@ class PlayState extends FlxState{
 		
 	}
 
+///////////////////////////////////////////////////////////////////// FUNCTIONS ///////////////////////////////////////////
 
 	function criaAsteroides():Void{
 		for (i in 0...5) {          //gera asteroides
@@ -171,6 +179,10 @@ class PlayState extends FlxState{
         FlxG.switchState(new GameOverState());
     }
 
+
+/////////////////////////////////////////////////////////////////////////////////////   UPDATE   /////////////////////////////////////////
+
+
 	override public function update(elapsed:Float):Void{
 
 		//atualizar os scores
@@ -191,6 +203,7 @@ class PlayState extends FlxState{
                 b.velocity.y = _velocity.y;
                 tiros++;
                 municao--;
+				_somTiro.play();
 
 			}
 		}
@@ -221,6 +234,8 @@ class PlayState extends FlxState{
 		super.update(elapsed);
 		
 	}
+
+///////////////////////////////////////////////////////////////////////// FUNCTIONS    ////////////////////////////////////
 
 	private function geraAsteroides():Void
 	{
