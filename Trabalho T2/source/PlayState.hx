@@ -110,6 +110,15 @@ class PlayState extends FlxState{
 		}
 	}
 
+	function onOverlapVida(a:FlxSprite, b:FlxSprite):Void{   //Colisao dos coracoes com o player
+		var colide = FlxCollision.pixelPerfectCheck(a, b);
+		if(colide){
+        	vidas += 1;
+			a.kill();
+		}
+    }
+
+
 	function onOverlapPlayer(a:FlxSprite, b:FlxSprite):Void{   //Colisao de player com asteroides
 		var colide = FlxCollision.pixelPerfectCheck(a, b);
 		if(colide){
@@ -178,6 +187,7 @@ class PlayState extends FlxState{
 		///////////////////////////COLISAO
 		FlxG.overlap(_player, asteroides, onOverlapPlayer);
 		FlxG.overlap(_balas, asteroides, onOverlapTiro);
+		FlxG.overlap(life, _player, onOverlapVida);
        
 		if(vidas == 0){
 			goGameOver();
