@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxCollision;
 import flixel.util.FlxTimer;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
@@ -19,8 +20,8 @@ class PlayState extends FlxState{
 	var _balas:FlxTypedGroup<Bullet>;
 	var _velocity:FlxVector = new FlxVector();
 
-	var _life:FlxTypedGroup<Life>;
-	var _municao:FlxTypedGroup<Ammunition>;
+	public static var life:FlxTypedGroup<Life>;
+	public static var especmunicao:FlxTypedGroup<Ammunition>;
 
 
 	public var cont:Float = 2;
@@ -30,6 +31,8 @@ class PlayState extends FlxState{
 	public var pontos:Int = 0;
 
 	var random:FlxRandom = new FlxRandom();
+	var ramdomLife:FlxRandom = new FlxRandom();
+	var ramdomMunicao:FlxRandom = new FlxRandom();
 
 
 	override public function create():Void {
@@ -42,15 +45,15 @@ class PlayState extends FlxState{
 		asteroides = new FlxTypedGroup<Asteroids>();
 		_balas = new FlxTypedGroup<Bullet>(20);
 
-		_life = new FlxTypedGroup<Life>();
-		_municao = new FlxTypedGroup<Ammunition>();
+		life = new FlxTypedGroup<Life>();
+		especmunicao = new FlxTypedGroup<Ammunition>();
 
 
       	camTarget.setPosition(FlxG.width/2, FlxG.height/2);
       	FlxG.camera.target = camTarget;
 		_player.x = _player.y = 300;
 		
-		
+
 		add(bg);
       	add(bg2);
       	add(camTarget);
@@ -58,25 +61,25 @@ class PlayState extends FlxState{
 		add(_hud);
 		add(asteroides);
 		add(_balas);
-		add(_life);
-		add(_municao);
+		add(life);
+		add(especmunicao);
 
 
 		for (i in 0...200) {          //gera asteroides
 			var a = new Asteroids();
 			a.kill();
 			asteroides.add(a);
-			//geraAsteroides();
 		}
 		spawnarAsteroides();
 
 		for (i in 0...10){
-			var n = new Life();
-			n .kill();
-			_life.add(n);
+			var n = new Life();  //gera vidas
+			n.kill();
+			life.add(n);
 		}
 		spawnarVidas();
-
+		
+		
 		for(i in 0...20){
             var s = new Bullet();
 			s.kill();
@@ -88,6 +91,8 @@ class PlayState extends FlxState{
         _velocity.y = 0;
 		
 	}
+
+
 	function criaAsteroides():Void{
 		for (i in 0...5) {          //gera asteroides
 			var a = new Asteroids();
@@ -96,22 +101,37 @@ class PlayState extends FlxState{
 			geraAsteroides();
 		}
 	}
+	function criaVidas():Void{
+		for (i in 0...5) {          //gera asteroides
+			var n = new Life();
+			n.kill();
+			life.add(n);
+			geraVidas();
+		}
+	}
 
 	function onOverlapPlayer(a:FlxSprite, b:FlxSprite):Void{   //Colisao de player com asteroides
-        vidas -= 1;
-		b.kill();
+		var colide = FlxCollision.pixelPerfectCheck(a, b);
+		if(colide){
+        	vidas -= 1;
+			b.kill();
+		}
     }
 
-	function onOverlapTiro(a:FlxSprite, b:FlxSprite):Void{   //Colisao de player com asteroides
-		a.kill();
-		b.kill();
-		b.reset(b.x, b.y);
-        b.loadGraphic(AssetPaths.explode__png, true, 64, 64);
-		pontos += 10;
-		new FlxTimer().start(0.2, function(Timer:FlxTimer) {
+	function onOverlapTiro(a:FlxSprite, b:FlxSprite):Void{   //Colisao de tiro com asteroides
+		var colide = FlxCollision.pixelPerfectCheck(a, b);
+		if(colide){
+			a.kill();
 			b.kill();
-			cast(b, Asteroids).reloadSprite();
-		}, 1);
+			b.reset(b.x, b.y);
+			b.loadGraphic(AssetPaths.explode__png, true, 64, 64);
+			pontos += 10;
+			new FlxTimer().start(0.2, function(Timer:FlxTimer) {
+				b.kill();
+				cast(b, Asteroids).reloadSprite();
+			}, 1);
+		}
+		
     }
 
 	function goGameOver():Void{
@@ -151,32 +171,14 @@ class PlayState extends FlxState{
 		if(asteroides == null){
 			criaAsteroides();
 		}
+		if(life == null){
+			criaVidas();
+		}
 
 		///////////////////////////COLISAO
 		FlxG.overlap(_player, asteroides, onOverlapPlayer);
 		FlxG.overlap(_balas, asteroides, onOverlapTiro);
        
-
-
-
-
-		///////////////////////////////////////////// fundo
-		////////////////////////////////////////// fazer o fundo se movimentar. n funciona ainda
-      	//camTarget.y+=2;
-      	var greater,lesser;
-      	if(bg.y > bg2.y){
-        	greater = bg;
-        	lesser = bg2;
-      	}
-      	else{
-        	greater = bg2;
-        	lesser = bg;
-      	}
-      	if(camTarget.y > greater.y + bg.height - FlxG.height/2){
-        	trace("Flip");
-        	lesser.y = greater.y + bg.height;
-      	}
-////////////////////////////////////////////////////////////////
 		if(vidas == 0){
 			goGameOver();
 		}
@@ -191,9 +193,22 @@ class PlayState extends FlxState{
 		asteroide.angularVelocity = 100;
 	}
 
+	// private function geraVidas():Void
+	// {
+	// 	var teste:Life = life.getFirstAvailable(Life);
+	// 	teste.reset(200, 100);
+	// 	teste.velocity.y = 10;
+	// }
+
 	private function geraBalas():Void
 	{
 		var balas:Bullet = _balas.recycle(Bullet);
+	}
+
+	private function geraVidas():Void
+	{
+		var life:Life = life.recycle(Life);
+		life.angularVelocity = 100;
 	}
 
 	function spawnarAsteroides() {
@@ -204,10 +219,11 @@ class PlayState extends FlxState{
 		}, 0);
 	}
 	function spawnarVidas() {
-		new FlxTimer().start(10, function(Timer:FlxTimer) {
-			var xRandom = random.int(0, FlxG.width - 64);
-			var _life = _life.getFirstAvailable();
-			_life.reset(xRandom, 0);
+		new FlxTimer().start(2, function(Timer:FlxTimer) {
+			var xxRandom = ramdomLife.int(0, FlxG.width - 64);
+			var life = life.getFirstAvailable();
+			life.reset(xxRandom, 0);
+			life.velocity.y = 100;
 		}, 0);
 	}
 }

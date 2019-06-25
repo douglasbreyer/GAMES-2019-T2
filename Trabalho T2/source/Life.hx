@@ -9,9 +9,9 @@ class Life extends FlxSprite{
 		
 		super();
 
-		loadGraphic(AssetPaths.heart__png, true, 16, 16);
+		loadGraphic(AssetPaths.heart__png, true, 48, 48);
         //makeGraphic(50, 50, FlxColor.RED);
-		centerOffsets();
+		// centerOffsets();
 		
     }
 
