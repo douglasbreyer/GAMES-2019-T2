@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.*;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
@@ -8,6 +9,7 @@ class MenuState extends FlxState{
     var _title:FlxText;
     var _btnPlay:FlxButton;
     var _btnCredito:FlxButton;
+
     override public function create():Void{
         _title = new FlxText(0, 0, 0, "TrAbAlHo T1", 40);
         _title.x = (FlxG.width/2)-(_title.width / 2);
@@ -21,9 +23,6 @@ class MenuState extends FlxState{
         _btnCredito.x = (FlxG.width/2)-(_btnCredito.width / 2);
         _btnCredito.y = _btnPlay.y + _btnPlay.height + 5;
 
-        // if (FlxG.sound.music == null){ // don't restart the music if it's already playing
-        //     FlxG.sound.playMusic(AssetPaths.dead__mp3, 1, true);
-        // }
 
 
         add(_title);

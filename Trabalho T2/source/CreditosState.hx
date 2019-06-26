@@ -9,6 +9,7 @@ class CreditosState extends FlxState{
     var _credito:FlxText;
     var _prog:FlxText;    
     var _arte:FlxText;
+    var _music:FlxText;
     var _agradecimentos:FlxText;
     var _sprite:FlxSprite;
     var _flixel:FlxText;
@@ -37,9 +38,16 @@ class CreditosState extends FlxState{
         _arte.velocity.y = -50;
         _arte.alignment = CENTER;
 
+        _music = new FlxText(0, 0, 0, "------- MUSIC -------\nBlender Foundation - opengameart.org\nNikke - opengameart\ndklon - opengameart\n\n", 20);
+        _music.x = (FlxG.width/2)-(_music.width / 2);
+        _music.y = _arte.y + _arte.height + 10;
+        _music.moves = true;
+        _music.velocity.y = -50;
+        _music.alignment = CENTER;
+
         _agradecimentos = new FlxText(0, 0, 0, "------- ACKNOWLEDGMENT -------\nHaxeflixel\nArtur S.\nCaroline R.\n UFFS - Chapecó\n\n", 20);
         _agradecimentos.x = (FlxG.width/2)-(_agradecimentos.width / 2);
-        _agradecimentos.y = _arte.y + _arte.height + 10;
+        _agradecimentos.y = _music.y + _music.height + 10;
         _agradecimentos.moves = true;
         _agradecimentos.velocity.y = -50;
         _agradecimentos.alignment = CENTER;
@@ -63,6 +71,7 @@ class CreditosState extends FlxState{
         add(_prog);
         add(_credito);
         add(_arte);
+        add(_music);
         add(_agradecimentos);
         add(_sprite);
         add(_flixel);

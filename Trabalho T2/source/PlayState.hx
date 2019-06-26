@@ -25,6 +25,11 @@ class PlayState extends FlxState{
 	public static var especmunicao:FlxTypedGroup<Ammunition>;
 
 	var _somTiro:FlxSound;
+	var _fundo:FlxSound;
+	var _especVidaUP:FlxSound;
+	var _especMunicaoUP:FlxSound;
+	var _colide:FlxSound;
+
 
 
 	public var cont:Float = 2;
@@ -54,6 +59,11 @@ class PlayState extends FlxState{
 		especmunicao = new FlxTypedGroup<Ammunition>();
 
 		_somTiro = FlxG.sound.load(AssetPaths.laser__wav);
+		_fundo = FlxG.sound.load(AssetPaths.fundo__ogg);
+		_especVidaUP = FlxG.sound.load(AssetPaths.life_pickup__wav);
+		_especMunicaoUP = FlxG.sound.load(AssetPaths.item_pickup__wav);
+		_colide = FlxG.sound.load(AssetPaths.dead__wav);
+		
 
 
       	camTarget.setPosition(FlxG.width/2, FlxG.height/2);
@@ -103,6 +113,7 @@ class PlayState extends FlxState{
 		super.create();
 		_velocity.x = 0;
         _velocity.y = 0;
+		_fundo.play();
 		
 	}
 
@@ -137,6 +148,7 @@ class PlayState extends FlxState{
 	function onOverlapMunicao(a:FlxSprite, b:FlxSprite):Void{   //Colisao das municoes com o player
 		var colide = FlxCollision.pixelPerfectCheck(a, b);
 		if(colide){
+			_especMunicaoUP.play();
         	municao += 100;
 			a.kill();
 		}
@@ -145,6 +157,7 @@ class PlayState extends FlxState{
 	function onOverlapVida(a:FlxSprite, b:FlxSprite):Void{   //Colisao dos coracoes com o player
 		var colide = FlxCollision.pixelPerfectCheck(a, b);
 		if(colide){
+			_especVidaUP.play();
         	vidas += 1;
 			a.kill();
 		}
@@ -154,6 +167,7 @@ class PlayState extends FlxState{
 	function onOverlapPlayer(a:FlxSprite, b:FlxSprite):Void{   //Colisao de player com asteroides
 		var colide = FlxCollision.pixelPerfectCheck(a, b);
 		if(colide){
+			_colide.play();
         	vidas -= 1;
 			b.kill();
 		}
@@ -228,6 +242,7 @@ class PlayState extends FlxState{
 		FlxG.overlap(especmunicao, _player, onOverlapMunicao);
        
 		if(vidas == 0){
+			
 			goGameOver();
 		}
 
@@ -269,7 +284,7 @@ class PlayState extends FlxState{
 		}, 0);
 	}
 	function spawnarVidas() {
-		new FlxTimer().start(10, function(Timer:FlxTimer) {
+		new FlxTimer().start(1, function(Timer:FlxTimer) {
 			var xxRandom = ramdomLife.int(0, FlxG.width - 64);
 			var life = life.getFirstAvailable();
 			life.reset(xxRandom, 0);

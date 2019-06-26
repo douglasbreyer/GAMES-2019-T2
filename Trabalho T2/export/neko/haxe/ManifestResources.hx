@@ -100,6 +100,7 @@ null
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_bg_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_bkgd_0_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_explode_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_foto_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_game_01___final_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_game_02___final_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_game_03___final_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -112,13 +113,16 @@ null
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_univ_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_music_melodic_power_track_c64_style_ogg extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_music_music_goes_here_txt extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_dark_intro_wav extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_darkintro_mp3 extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_dead_mp3 extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_dead_wav extends null { }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_intro_mp3 extends null { }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_item_pickup_mp3 extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_fundo_ogg extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_intro_wav extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_item_pickup_flac extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_item_pickup_wav extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_laser_wav extends null { }
-@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_life_pickup_mp3 extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_life_pickup_wav extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_nohope_mp3 extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_retro_no_hope_wav extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_sounds_sounds_go_here_txt extends null { }
