@@ -23,6 +23,7 @@ class PlayState extends FlxState{
 
 	public static var life:FlxTypedGroup<Life>;
 	public static var especmunicao:FlxTypedGroup<Ammunition>;
+	public static var chefao:FlxTypedGroup<Chefao>;
 
 	var _somTiro:FlxSound;
 	var _fundo:FlxSound;
@@ -41,6 +42,7 @@ class PlayState extends FlxState{
 	var random:FlxRandom = new FlxRandom();
 	var ramdomLife:FlxRandom = new FlxRandom();
 	var ramdomMunicao:FlxRandom = new FlxRandom();
+	var ramdomChefao:FlxRandom = new FlxRandom();
 
 ////////////////////////////////////////////////////////////////////// CREATE ////////////////////////
 
@@ -57,6 +59,7 @@ class PlayState extends FlxState{
 
 		life = new FlxTypedGroup<Life>();
 		especmunicao = new FlxTypedGroup<Ammunition>();
+		chefao = new FlxTypedGroup<Chefao>();
 
 		_somTiro = FlxG.sound.load(AssetPaths.laser__wav);
 		_fundo = FlxG.sound.load(AssetPaths.fundo__ogg);
@@ -80,6 +83,7 @@ class PlayState extends FlxState{
 		add(_balas);
 		add(life);
 		add(especmunicao);
+		add(chefao);
 
 
 		for (i in 0...200) {          //gera asteroides
@@ -102,6 +106,13 @@ class PlayState extends FlxState{
 			especmunicao.add(n);
 		}
 		spawnarMunicao();
+
+		for (i in 0...10){
+			var n = new Chefao();  //gera especial de chefao
+			n.kill();
+			chefao.add(n);
+		}
+		spawnarChefao();
 		
 		
 		for(i in 0...20){
@@ -145,6 +156,16 @@ class PlayState extends FlxState{
 		}
 	}
 
+	function criaChefao():Void{
+		for (i in 0...5 ) {          //gera especial de chefao
+			var n = new Chefao();
+			n.kill();
+			chefao.add(n);
+			geraChefao();
+		}
+	}
+
+
 	function onOverlapMunicao(a:FlxSprite, b:FlxSprite):Void{   //Colisao das municoes com o player
 		var colide = FlxCollision.pixelPerfectCheck(a, b);
 		if(colide){
@@ -173,6 +194,15 @@ class PlayState extends FlxState{
 		}
     }
 
+	function onOverlapChefao(a:FlxSprite, b:FlxSprite):Void{   //Colisao de player com asteroides
+		var colide = FlxCollision.pixelPerfectCheck(a, b);
+		if(colide){
+			b.kill();
+        	a.health--;
+			pontos+=30;
+		}
+    }
+	
 	function onOverlapTiro(a:FlxSprite, b:FlxSprite):Void{   //Colisao de tiro com asteroides
 		var colide = FlxCollision.pixelPerfectCheck(a, b);
 		if(colide){
@@ -234,15 +264,18 @@ class PlayState extends FlxState{
 		if(life == null){
 			criaVidas();
 		}
+		if(chefao == null){
+			criaChefao();
+		}
 
 		///////////////////////////COLISAO
 		FlxG.overlap(_player, asteroides, onOverlapPlayer);
 		FlxG.overlap(_balas, asteroides, onOverlapTiro);
 		FlxG.overlap(life, _player, onOverlapVida);
 		FlxG.overlap(especmunicao, _player, onOverlapMunicao);
+		FlxG.overlap(chefao, _balas, onOverlapChefao);
        
 		if(vidas == 0){
-			
 			goGameOver();
 		}
 
@@ -270,6 +303,12 @@ class PlayState extends FlxState{
 		life.angularVelocity = 100;
 	}
 
+	private function geraChefao():Void
+	{
+		var chefao:Chefao = chefao.recycle(Chefao);
+		chefao.angularVelocity = 100;
+	}
+
 	private function geraMunicao():Void
 	{
 		var especmunicao:Ammunition = especmunicao.recycle(Ammunition);
@@ -284,7 +323,7 @@ class PlayState extends FlxState{
 		}, 0);
 	}
 	function spawnarVidas() {
-		new FlxTimer().start(1, function(Timer:FlxTimer) {
+		new FlxTimer().start(7, function(Timer:FlxTimer) {
 			var xxRandom = ramdomLife.int(0, FlxG.width - 64);
 			var life = life.getFirstAvailable();
 			life.reset(xxRandom, 0);
@@ -297,6 +336,14 @@ class PlayState extends FlxState{
 			var especmunicao = especmunicao.getFirstAvailable();
 			especmunicao.reset(xxxRandom, 0);
 			especmunicao.velocity.y = 100;
+		}, 0);
+	}
+	function spawnarChefao() {
+		new FlxTimer().start(2, function(Timer:FlxTimer) {
+			var xxxxRandom = ramdomChefao .int(0, FlxG.width - 64);
+			var chefao = chefao.getFirstAvailable();
+			chefao.reset(xxxxRandom, 0);
+			chefao.velocity.y = 50;
 		}, 0);
 	}
 }
