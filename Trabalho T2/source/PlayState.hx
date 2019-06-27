@@ -339,7 +339,7 @@ class PlayState extends FlxState{
 		}, 0);
 	}
 	function spawnarChefao() {
-		new FlxTimer().start(2, function(Timer:FlxTimer) {
+		new FlxTimer().start(5, function(Timer:FlxTimer) {
 			var xxxxRandom = ramdomChefao .int(0, FlxG.width - 64);
 			var chefao = chefao.getFirstAvailable();
 			chefao.reset(xxxxRandom, 0);
